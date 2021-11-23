@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "assets": "^3.0.1",
+    "classnames": "^2.2.6",
+    "phaser": "^3.55.2",
+    "phaser3-rex-plugins": "^1.1.63",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
