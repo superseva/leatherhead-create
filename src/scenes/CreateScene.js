@@ -100,10 +100,13 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   addObject({ id, type, fileType, path }) {
+
     const card = this.add.image(0, 0, id);
+    card.setData('assetData', { ...arguments[0] })
     let loader = new Phaser.Loader.LoaderPlugin(this);
     loader.image(id, path);
     loader.once(Phaser.Loader.Events.COMPLETE, () => {
+      //card.setData('data', { ...id, type, fileType, path })
       card.setTexture(id)
       if (type == 'avatar') {
         this.avatarContainer.removeAll(true);
@@ -147,15 +150,23 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   exportImage = () => {
-    let dataURI = this.game.canvas.toDataURL('image/png')
+    const dataURI = this.game.canvas.toDataURL('image/png');
+    const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
+    const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
+      //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
+      const _positioning = { x: ast.x, y: ast.y, rotation: ast.rotation, scale: ast.scaleX }
+      const _assetData = ast.getData('assetData')
+      const _data = { ..._assetData, ..._positioning }
+      return _data
+    }) : [];
     const createdData = {
       layers: {
-        avatar: 'Working On It',
-        stickers: []
+        avatar: avatarLayers,
+        stickers: stickerLayers
       },
       dataURI: dataURI
     }
-    return createdData;
+    return JSON.stringify(createdData);
   }
 
   create() {
