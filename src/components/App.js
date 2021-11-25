@@ -61,7 +61,6 @@ function App({ game }) {
     let getCreatedImage = () => {
         try {
             const createdData = game.exportImage();
-            console.warn(createdData)
         } catch (e) {
             console.log(e)
         }
