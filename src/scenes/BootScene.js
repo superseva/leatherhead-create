@@ -8,6 +8,7 @@ export default class BootScene extends Phaser.Scene {
       font: '16px Courier',
       fill: '#00ff00',
     })
+
   }
   create() {
     this.scene.start('CreateScene')

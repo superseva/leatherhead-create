@@ -5,7 +5,7 @@ export default class CreateScene extends Phaser.Scene {
   constructor() {
     super('CreateScene')
     this.selectedObject;
-    this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Delete]
+    this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Delete];
   }
 
   preload() {
@@ -123,7 +123,7 @@ export default class CreateScene extends Phaser.Scene {
 
   onAssetClicked(obj) {
     // Only allow stickers to be selected
-    if (obj.getData('type') != 'sticker') {
+    if (obj.getData('type') != 'sticker' && this.selectedObject) {
       this.postFxPlugin.remove(this.selectedObject);
       this.selectedObject = null;
       return;
@@ -146,7 +146,22 @@ export default class CreateScene extends Phaser.Scene {
     });
   }
 
+  exportImage = () => {
+    let dataURI = this.game.canvas.toDataURL('image/png')
+    const createdData = {
+      layers: {
+        avatar: 'Working On It',
+        stickers: []
+      },
+      dataURI: dataURI
+    }
+    return createdData;
+  }
+
   create() {
+
+    this.game.exportImage = this.exportImage;
+
     this.postFxPlugin = this.plugins.get('rexOutlinePipeline');
     //this.dragMng = this.plugins.get('rexDrag');
     this.rotate = this.rexGestures.add.rotate();

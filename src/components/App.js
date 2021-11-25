@@ -57,14 +57,26 @@ function App({ game }) {
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
+    //Get json data cotaining used layers and prepared Base64 png from creator
+    let getCreatedImage = () => {
+        try {
+            const createdData = game.exportImage();
+            console.warn(createdData)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <div>
             <h1>REACT WITH ASSETS</h1>
+            <button onClick={getCreatedImage}>Export Image</button>
             {/* <Menu /> */}
             <h3>Avatars</h3>
             <Thumbs thumbs={avatars} onThumbClick={onAvatarClick} />
             <h3>Stickers</h3>
             <Thumbs thumbs={stickers} onThumbClick={onStickerClick} />
+
         </div >
     );
 }

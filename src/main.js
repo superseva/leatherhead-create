@@ -16,6 +16,7 @@ const game = new Phaser.Game({
   width: 420,
   height: 420,
   backgroundColor: '#efefef',
+  preserveDrawingBuffer: true,
   plugins: {
     global: [{
       key: 'rexDrag',
