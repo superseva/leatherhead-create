@@ -154,7 +154,6 @@ export default class CreateScene extends Phaser.Scene {
   exportImage = () => {
     this.deselectAsset();
     return new Promise(resolve => {
-
       setTimeout(() => {
         const dataURI = this.game.canvas.toDataURL('image/png');
         const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
@@ -175,23 +174,6 @@ export default class CreateScene extends Phaser.Scene {
         resolve(createdData)
       }, 500)
     })
-    // const dataURI = this.game.canvas.toDataURL('image/png');
-    // const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
-    // const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
-    //   //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
-    //   const _positioning = { x: ast.x, y: ast.y, rotation: ast.rotation, scale: ast.scaleX }
-    //   const _assetData = ast.getData('assetData')
-    //   const _data = { ..._assetData, ..._positioning }
-    //   return _data
-    // }) : [];
-    // const createdData = {
-    //   layers: {
-    //     avatar: avatarLayers,
-    //     stickers: stickerLayers
-    //   },
-    //   dataURI: dataURI
-    // }
-    // return JSON.stringify(createdData);
   }
 
   deselectAsset() {
