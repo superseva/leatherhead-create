@@ -71,7 +71,6 @@ function App({ game }) {
 
     return (
         <div>
-            <h1>REACT WITH ASSETS</h1>
             <button onClick={getCreatedImage}>Export Image</button>
             {/* <Menu /> */}
             <h3>Avatars</h3>
