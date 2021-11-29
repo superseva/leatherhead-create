@@ -12,6 +12,6 @@ export const CreateConfig = {
     svgLoadScale: 0.04,
     rotationStep: 6,
     scaleStep: 0.05,
-    stageW: 680,
-    stageH: 680,
+    stageW: 420,
+    stageH: 420,
 }
