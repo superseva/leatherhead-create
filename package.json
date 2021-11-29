@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "assets": "^3.0.1",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.63",

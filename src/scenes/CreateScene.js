@@ -127,8 +127,9 @@ export default class CreateScene extends Phaser.Scene {
   onAssetClicked(obj) {
     // Only allow stickers to be selected
     if (obj.getData('type') != 'sticker' && this.selectedObject) {
-      this.postFxPlugin.remove(this.selectedObject);
-      this.selectedObject = null;
+      //this.postFxPlugin.remove(this.selectedObject);
+      //this.selectedObject = null;
+      this.deselectAsset();
       return;
     }
     // Remove selection graphic
@@ -137,6 +138,7 @@ export default class CreateScene extends Phaser.Scene {
 
     //Select new object 
     this.selectedObject = obj;
+    this.toggleUiContainer();
     //this.dragMng.add(this.selectedObject);
 
     this.postFxPlugin.add(this.selectedObject, {
@@ -150,23 +152,66 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   exportImage = () => {
-    const dataURI = this.game.canvas.toDataURL('image/png');
-    const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
-    const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
-      //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
-      const _positioning = { x: ast.x, y: ast.y, rotation: ast.rotation, scale: ast.scaleX }
-      const _assetData = ast.getData('assetData')
-      const _data = { ..._assetData, ..._positioning }
-      return _data
-    }) : [];
-    const createdData = {
-      layers: {
-        avatar: avatarLayers,
-        stickers: stickerLayers
-      },
-      dataURI: dataURI
+    this.deselectAsset();
+    return new Promise(resolve => {
+
+      setTimeout(() => {
+        const dataURI = this.game.canvas.toDataURL('image/png');
+        const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
+        const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
+          //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
+          const _positioning = { x: ast.x, y: ast.y, rotation: ast.rotation, scale: ast.scaleX }
+          const _assetData = ast.getData('assetData')
+          const _data = { ..._assetData, ..._positioning }
+          return _data
+        }) : [];
+        const createdData = {
+          layers: {
+            avatar: avatarLayers,
+            stickers: stickerLayers
+          },
+          dataURI: dataURI
+        }
+        resolve(createdData)
+      }, 500)
+    })
+    // const dataURI = this.game.canvas.toDataURL('image/png');
+    // const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
+    // const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
+    //   //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
+    //   const _positioning = { x: ast.x, y: ast.y, rotation: ast.rotation, scale: ast.scaleX }
+    //   const _assetData = ast.getData('assetData')
+    //   const _data = { ..._assetData, ..._positioning }
+    //   return _data
+    // }) : [];
+    // const createdData = {
+    //   layers: {
+    //     avatar: avatarLayers,
+    //     stickers: stickerLayers
+    //   },
+    //   dataURI: dataURI
+    // }
+    // return JSON.stringify(createdData);
+  }
+
+  deselectAsset() {
+    if (this.selectedObject) {
+      this.postFxPlugin.remove(this.selectedObject);
     }
-    return JSON.stringify(createdData);
+    this.selectedObject = null;
+    this.toggleUiContainer();
+
+  }
+
+  toggleUiContainer() {
+    if (this.selectedObject != null) {
+      this.uiContainer.setPosition(0, 0)
+      this.uiContainer.setVisible(true)
+    }
+    else {
+      this.uiContainer.setPosition(-500, -500)
+      this.uiContainer.setVisible(false)
+    }
   }
 
   create() {
@@ -199,7 +244,7 @@ export default class CreateScene extends Phaser.Scene {
     this.stickerContainer = this.add.container(0, 0);
     this.stickerContainer.name = 'stickerContainer';
     this.uiContainer = this.add.container(0, 0);
-    this.uiContainer.name = 'uiContainer'
+    this.uiContainer.name = 'uiContainer';
     //UI
     this.uiBg = this.add.rectangle(0, 0, CreateConfig.stageW, 30, 0xff0000)
     this.uiBg.setOrigin(0, 0)
@@ -212,7 +257,9 @@ export default class CreateScene extends Phaser.Scene {
       btn.on('pointerdown', () => {
         this.onBtnClick(btn);
       });
+      this.uiContainer.add(btn);
     }
+    this.toggleUiContainer();
 
     //Catch the event from the React
     this.game.events.on('addAsset', this.addObject.bind(this));

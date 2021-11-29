@@ -4,6 +4,8 @@ import { useState } from "react"
 import Menu from "./Menu";
 import Thumbs from "./Thumbs";
 
+import "babel-polyfill";
+
 function App({ game }) {
     const [avatars, setAvatar] = useState([
         {
@@ -58,10 +60,10 @@ function App({ game }) {
     }
 
     //Get json data cotaining used layers and prepared Base64 png from creator
-    let getCreatedImage = () => {
+    const getCreatedImage = async () => {
         try {
-            const createdData = game.exportImage();
-            console.warn(createdData)
+            const createdData = await game.exportImage();
+            console.warn(createdData.dataURI)
         } catch (e) {
             console.log(e)
         }
