@@ -63,7 +63,7 @@ function App({ game }) {
     const getCreatedImage = async () => {
         try {
             const createdData = await game.exportImage();
-            console.warn(createdData.dataURI)
+            console.warn(JSON.stringify(createdData))
         } catch (e) {
             console.log(e)
         }
