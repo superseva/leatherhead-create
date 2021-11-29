@@ -126,12 +126,13 @@ export default class CreateScene extends Phaser.Scene {
 
   onAssetClicked(obj) {
     // Only allow stickers to be selected
-    if (obj.getData('type') != 'sticker' && this.selectedObject) {
-      //this.postFxPlugin.remove(this.selectedObject);
-      //this.selectedObject = null;
-      this.deselectAsset();
+    //console.log(obj.getData('assetData')['type'])
+    if (obj.getData('assetData')['type'] !== 'sticker') {
+      if (this.selectedObject)
+        this.deselectAsset();
       return;
     }
+
     // Remove selection graphic
     if (this.selectedObject)
       this.postFxPlugin.remove(this.selectedObject);
@@ -209,12 +210,16 @@ export default class CreateScene extends Phaser.Scene {
     this.rotate = this.rexGestures.add.rotate();
 
     this.rotate.on('rotate', function (rotate) {
-      console.log(`${rotate.rotation}, ${rotate.rotation * (180 / Math.PI)}`);
-      let _rot = this.selectedObject.rotation + ((rotate.rotation * (180 / Math.PI)) * 0.02);
-      this.selectedObject.setRotation(_rot);
+      //console.log(`${rotate.rotation}, ${rotate.rotation * (180 / Math.PI)}`);
+      if (this.selectedObject) {
+        let _rot = this.selectedObject.rotation + ((rotate.rotation * (180 / Math.PI)) * 0.02);
+        this.selectedObject.setRotation(_rot);
+      }
     }, this)
       .on('drag1', function (rotate) {
-        this.selectedObject.setPosition(this.selectedObject.x + rotate.drag1Vector.x, this.selectedObject.y + rotate.drag1Vector.y)
+        if (this.selectedObject) {
+          this.selectedObject.setPosition(this.selectedObject.x + rotate.drag1Vector.x, this.selectedObject.y + rotate.drag1Vector.y)
+        }
       }, this);
     this.pinch = this.rexGestures.add.pinch();
     this.pinch.on('pinch', function (pinch) {
