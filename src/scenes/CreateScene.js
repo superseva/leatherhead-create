@@ -156,6 +156,7 @@ export default class CreateScene extends Phaser.Scene {
     return new Promise(resolve => {
       setTimeout(() => {
         const dataURI = this.game.canvas.toDataURL('image/png');
+        const canvasConfig = { w: CreateConfig.stageW, h: CreateConfig.stageH }
         const avatarLayers = this.avatarContainer.list.length ? this.avatarContainer.list[0].getData('assetData') : {}
         const stickerLayers = this.stickerContainer.list.length ? this.stickerContainer.list.map(function (ast) {
           //console.log(ast.x, ast.y, ast.rotation, ast.scaleX);
@@ -165,6 +166,9 @@ export default class CreateScene extends Phaser.Scene {
           return _data
         }) : [];
         const createdData = {
+          config: {
+            canvas: canvasConfig
+          },
           layers: {
             avatar: avatarLayers,
             stickers: stickerLayers
