@@ -5,7 +5,7 @@ export default class CreateScene extends Phaser.Scene {
   constructor() {
     super('CreateScene')
     this.selectedObject;
-    this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Delete];
+    this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
   }
 
   preload() {
@@ -15,6 +15,7 @@ export default class CreateScene extends Phaser.Scene {
     this.load.svg(UI.RotateRight, './assets/ui/rotate-right.svg', { scale: CreateConfig.svgLoadScale });
     this.load.svg(UI.MoveFront, './assets/ui/move-front.svg', { scale: CreateConfig.svgLoadScale });
     this.load.svg(UI.MoveBack, './assets/ui/move-back.svg', { scale: CreateConfig.svgLoadScale });
+    this.load.svg(UI.Lock, './assets/ui/lock-solid.svg', { scale: CreateConfig.svgLoadScale });
     this.load.svg(UI.Delete, './assets/ui/trash.svg', { scale: CreateConfig.svgLoadScale });
   }
 
@@ -52,12 +53,18 @@ export default class CreateScene extends Phaser.Scene {
     this.selectedObject.setScale(this.selectedObject.scale + CreateConfig.scaleStep * scale)
   }
 
+  onLock() {
+    if (!this.selectedObject)
+      return;
+    this.selectedObject.setData('locked', !this.selectedObject.getData('locked'))
+  }
+
   onBtnClick(btn) {
     if (!this.selectedObject) {
       console.log(`${btn.name} clicked but no object is selected`)
       return;
     }
-    console.log(btn.name)
+    //console.log(btn.name)
     if (btn.name === UI.Delete) {
       this.onRemoveObject()
     }
@@ -78,6 +85,9 @@ export default class CreateScene extends Phaser.Scene {
     }
     else if (btn.name === UI.ScaleDown) {
       this.onScale(-1)
+    }
+    else if (btn.name === UI.Lock) {
+      this.onLock()
     }
   }
 
@@ -103,6 +113,7 @@ export default class CreateScene extends Phaser.Scene {
 
     const card = this.add.image(0, 0, id);
     card.setData('assetData', { ...arguments[0] })
+    card.setData('locked', false)
     let loader = new Phaser.Loader.LoaderPlugin(this);
     loader.image(id, path);
     loader.once(Phaser.Loader.Events.COMPLETE, () => {
@@ -125,8 +136,7 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   onAssetClicked(obj) {
-    // Only allow stickers to be selected
-    //console.log(obj.getData('assetData')['type'])
+
     if (obj.getData('assetData')['type'] !== 'sticker') {
       if (this.selectedObject)
         this.deselectAsset();
@@ -187,7 +197,6 @@ export default class CreateScene extends Phaser.Scene {
     }
     this.selectedObject = null;
     this.toggleUiContainer();
-
   }
 
   toggleUiContainer() {
@@ -212,18 +221,24 @@ export default class CreateScene extends Phaser.Scene {
     this.rotate.on('rotate', function (rotate) {
       //console.log(`${rotate.rotation}, ${rotate.rotation * (180 / Math.PI)}`);
       if (this.selectedObject) {
+        if (this.selectedObject.getData('locked'))
+          return;
         let _rot = this.selectedObject.rotation + ((rotate.rotation * (180 / Math.PI)) * 0.02);
         this.selectedObject.setRotation(_rot);
       }
     }, this)
       .on('drag1', function (rotate) {
         if (this.selectedObject) {
+          if (this.selectedObject.getData('locked'))
+            return;
           this.selectedObject.setPosition(this.selectedObject.x + rotate.drag1Vector.x, this.selectedObject.y + rotate.drag1Vector.y)
         }
       }, this);
     this.pinch = this.rexGestures.add.pinch();
     this.pinch.on('pinch', function (pinch) {
       if (this.selectedObject) {
+        if (this.selectedObject.getData('locked'))
+          return;
         this.selectedObject.scaleX *= pinch.scaleFactor;
         this.selectedObject.scaleY *= pinch.scaleFactor;
       }

@@ -5,6 +5,7 @@ export const UI = {
     RotateRight: 'ui_rotate_r',
     MoveFront: 'ui_move_front',
     MoveBack: 'ui_move_back',
+    Lock: 'ui_lock',
     Delete: 'ui_delete'
 };
 
