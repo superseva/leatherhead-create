@@ -233,6 +233,7 @@ export default class CreateScene extends Phaser.Scene {
     this.uiContainer.name = 'uiContainer';
     //UI
     this.uiBg = this.add.rectangle(0, 0, CreateConfig.stageW, 30, 0xffffff)
+    this.uiBg.setAlpha(0.6)
     this.uiBg.setOrigin(0, 0)
     this.uiContainer.add(this.uiBg);
     for (let i = 0; i < this.uiButtons.length; i++) {
