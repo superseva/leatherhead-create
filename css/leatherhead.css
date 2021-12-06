@@ -37,6 +37,7 @@ body, .leaderhead-app {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: saddlebrown;
 }
 
 .gallery {
