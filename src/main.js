@@ -19,6 +19,10 @@ const game = new Phaser.Game({
   height: CreateConfig.stageH,
   backgroundColor: '#efefef',
   preserveDrawingBuffer: true,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   plugins: {
     global: [{
       key: 'rexDrag',
@@ -46,5 +50,5 @@ ReactDOM.render(
   <React.StrictMode>
     <App game={game} />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("react")
 );

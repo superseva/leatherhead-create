@@ -23,3 +23,10 @@ Build the production version:
 $ npm run build
 $ npx http-server dist
 ```
+
+
+To Run dummy json server on http://localhost:5000
+
+```
+$ npm run json_server
+```

@@ -1,0 +1,81 @@
+{
+  "avatars": [
+    {
+      "id": "avatar1",
+      "type": "avatar",
+      "fileType": "png",
+      "path": "./assets/avatars/D.jpg"
+    },
+    {
+      "id": "avatar2",
+      "type": "avatar",
+      "fileType": "png",
+      "path": "./assets/avatars/E.jpg"
+    },
+    {
+      "id": "avatar3",
+      "type": "avatar",
+      "fileType": "png",
+      "path": "./assets/avatars/F.jpg"
+    }  
+  ],
+  "stickers": [
+    {
+      "id": "s1",
+      "type": "sticker",
+      "fileType": "png",
+      "path": "./assets/stickers/PipeDream.png"
+  },
+  {
+    "id": "s2",
+    "type": "sticker",
+    "fileType": "png",
+    "path": "./assets/stickers/ComedyCentral.png"
+  },
+  {
+    "id": "s3",
+    "type": "sticker",
+    "fileType": "png",
+    "path": "./assets/stickers/Moo.png"
+  },
+  {
+    "id": "s4",
+    "type": "sticker",
+    "fileType": "png",
+    "path": "./assets/stickers/PipeDream.png"
+},
+{
+  "id": "s5",
+  "type": "sticker",
+  "fileType": "png",
+  "path": "./assets/stickers/ComedyCentral.png"
+},
+{
+  "id": "s6",
+  "type": "sticker",
+  "fileType": "png",
+  "path": "./assets/stickers/Moo.png"
+},
+{
+  "id": "s7",
+  "type": "sticker",
+  "fileType": "png",
+  "path": "./assets/stickers/PipeDream.png"
+},
+{
+"id": "s8",
+"type": "sticker",
+"fileType": "png",
+"path": "./assets/stickers/ComedyCentral.png"
+},
+{
+"id": "s9",
+"type": "sticker",
+"fileType": "png",
+"path": "./assets/stickers/Moo.png"
+}
+  ],
+  "profile": {
+    "name": "HappySteve"
+  }
+}

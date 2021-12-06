@@ -1,11 +1,70 @@
 html,
-body {
+body, .leaderhead-app {
   margin: 0;
   padding:0;
+  height: 100%;
+}
+.leaderhead-app{
+  position: relative;
+  background-color: rebeccapurple;
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  align-items: center;
+  .game-wrap{
+    background-color: red;
+    width: 60vh;
+    height: 60vh;
+  }
+ 
+  .react{   
+    width: 60vh;
+    height: 40vh;
+    //display: flex;
+   // flex:1;
+    background-color: royalblue;
+    //flex-basis: 250px;
+   
+  }
+  
+}
+
+.react-ui{
+  position: relative;
+  height: 100%;
+  .steps{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+.gallery{
+  display: block;
+  height:100%;
+  overflow-x:hidden;
+  overflow-y: scroll;  
+  
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.thumbs{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  //overflow: scroll;
+  margin-bottom: 30px;
+
 }
 .thumb{
-    padding: 0px;
-    margin: 0;
-    width: 110px;
-    cursor: pointer;
+  padding: 0px;
+  margin: 0 0 20px 0;
+  width: 110px;
+  cursor: pointer;
 }

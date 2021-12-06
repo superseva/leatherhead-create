@@ -1,0 +1,67 @@
+html,
+body, .leaderhead-app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.leaderhead-app {
+  position: relative;
+  background-color: rebeccapurple;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leaderhead-app .game-wrap {
+  background-color: red;
+  width: 60vh;
+  height: 60vh;
+}
+
+.leaderhead-app .react {
+  width: 60vh;
+  height: 40vh;
+  background-color: royalblue;
+}
+
+.react-ui {
+  position: relative;
+  height: 100%;
+}
+
+.react-ui .steps {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.gallery {
+  display: block;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.thumbs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.thumb {
+  padding: 0px;
+  margin: 0 0 20px 0;
+  width: 110px;
+  cursor: pointer;
+}
+/*# sourceMappingURL=leatherhead.css.map */
