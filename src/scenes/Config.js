@@ -9,6 +9,14 @@ export const UI = {
     Delete: 'ui_delete'
 };
 
+export const AppSteps = {
+    Avatars: 'Avatars',
+    Stickers: 'Stickers',
+    Animate: 'Animate',
+    FX: 'FX',
+    Export: 'Export'
+}
+
 export const CreateConfig = {
     svgLoadScale: 0.04,
     rotationStep: 6,

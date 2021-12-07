@@ -1,4 +1,4 @@
-import { UI, CreateConfig } from "./Config";
+import { UI, CreateConfig, AppSteps } from "./Config";
 
 
 export default class CreateScene extends Phaser.Scene {
@@ -71,10 +71,10 @@ export default class CreateScene extends Phaser.Scene {
     this.step = context.step;
     this.deselectAsset();
     //console.warn(`STEP: ${this.step}`)
-    if (this.step == 'avatars') {
+    if (this.step == AppSteps.Avatars) {
       this.stickerContainer.setAlpha(0.2)
     }
-    if (this.step == 'stickers') {
+    if (this.step == AppSteps.Stickers) {
       this.stickerContainer.setAlpha(1)
     }
 
@@ -205,7 +205,7 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   onAssetClicked(obj) {
-    if (this.step != 'stickers') {
+    if (this.step != AppSteps.Stickers) {
       console.warn('Cant Select Assets unless in step STICKERS');
       return;
     }

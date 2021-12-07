@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react"
+import { AppSteps } from "../scenes/Config";
 
 import Menu from "./Menu";
 import Thumbs from "./Thumbs";
@@ -8,16 +9,13 @@ import "babel-polyfill";
 
 const App = ({ game }) => {
 
-    const appSteps = ['avatars', 'stickers', 'animate', 'fx', 'export'];
-    const [showAvatars, setShowAvatars] = useState(false);
-    const [showStickers, setShowStickers] = useState(false);
-    const [showAnimate, setShowAnimate] = useState(false);
-    const [showFX, setShowFX] = useState(false);
+
+    const [showStep, setShowStep] = useState(AppSteps.Avatars);
 
     // LOAD AVATARS ON LOAD
     useEffect(() => {
         const getAvatars = async () => {
-            await changeStep('avatars')
+            await changeStep(AppSteps.Avatars)
         }
         getAvatars();
     }, [])
@@ -107,32 +105,18 @@ const App = ({ game }) => {
     }
 
     let changeStep = async (step) => {
-        if (step == 'avatars') {
-            setShowAvatars(true)
-            setShowStickers(false)
-            setShowAnimate(false)
-            setShowFX(false)
+        setShowStep(step)
+        if (step == AppSteps.Avatars) {
+            console.warn('alo')
             await fetchAvatars()
-        } else if (step == 'stickers') {
-            setShowAvatars(false)
-            setShowStickers(true)
-            setShowAnimate(false)
-            setShowFX(false)
+        } else if (step == AppSteps.Stickers) {
             await fetchStickers()
         }
-        else if (step == 'animate') {
-            setShowAvatars(false)
-            setShowStickers(false)
-            setShowAnimate(true)
-            setShowFX(false)
-            //await fetchStickers()
+        else if (step == AppSteps.Animate) {
+
         }
-        else if (step == 'fx') {
-            setShowAvatars(false)
-            setShowStickers(false)
-            setShowAnimate(false)
-            setShowFX(true)
-            //await fetchStickers()
+        else if (step == AppSteps.FX) {
+
         }
         // TODO tell phaser to change step too
         game.events.emit('changeStep', { step: step })
@@ -140,12 +124,12 @@ const App = ({ game }) => {
     }
 
     let onAvatarClick = (asset) => {
-        console.log(asset);
+        // console.log(asset);
         game.events.emit('addAsset', { id: asset.id, type: 'avatar', fileType: asset.fileType, path: asset.path })
     }
 
     let onStickerClick = (asset) => {
-        console.log(asset);
+        //  console.log(asset);
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
@@ -162,24 +146,24 @@ const App = ({ game }) => {
     return (
         <div className="react-ui">
             <div className='gallery'>
-                {showAvatars && <Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' />}
-                {showStickers && <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' />}
+                {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
+                {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
             </div>
             {/* <Menu /> */}
             <div className="steps">
-                <div onClick={(e) => { changeStep('avatars') }} className={`app-step-button ${showAvatars ? 'selected' : ''}`}>
+                <div onClick={(e) => { changeStep(AppSteps.Avatars) }} className={`app-step-button ${showStep == AppSteps.Avatars ? 'selected' : ''}`}>
                     <label className='title'>AVATAR</label>
                     <label className='step-number'>1</label>
                 </div>
-                <div onClick={(e) => { changeStep('stickers') }} className={`app-step-button ${showStickers ? 'selected' : ''}`}>
+                <div onClick={(e) => { changeStep(AppSteps.Stickers) }} className={`app-step-button ${showStep == AppSteps.Stickers ? 'selected' : ''}`}>
                     <label className='title'>STICKER</label>
                     <label className='step-number'>2</label>
                 </div>
-                <div onClick={(e) => { changeStep('animate') }} className={`app-step-button ${showAnimate ? 'selected' : ''}`}>
+                <div onClick={(e) => { changeStep(AppSteps.Animate) }} className={`app-step-button ${showStep == AppSteps.Animate ? 'selected' : ''}`}>
                     <label className='title'>ANIMATE</label>
                     <label className='step-number'>3</label>
                 </div>
-                <div onClick={(e) => { changeStep('fx') }} className={`app-step-button ${showFX ? 'selected' : ''}`}>
+                <div onClick={(e) => { changeStep(AppSteps.FX) }} className={`app-step-button ${showStep == AppSteps.FX ? 'selected' : ''}`}>
                     <label className='title'>AD FX</label>
                     <label className='step-number'>4</label>
                 </div>
