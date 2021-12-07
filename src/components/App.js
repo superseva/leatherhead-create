@@ -6,13 +6,13 @@ import Thumbs from "./Thumbs";
 
 import "babel-polyfill";
 
-function App({ game }) {
+const App = ({ game }) => {
 
-    const appSteps = ['avatars', 'stickers', 'effects', 'sounds', 'export'];
+    const appSteps = ['avatars', 'stickers', 'animate', 'fx', 'export'];
     const [showAvatars, setShowAvatars] = useState(false);
     const [showStickers, setShowStickers] = useState(false);
-
-
+    const [showAnimate, setShowAnimate] = useState(false);
+    const [showFX, setShowFX] = useState(false);
 
     // LOAD AVATARS ON LOAD
     useEffect(() => {
@@ -31,16 +31,28 @@ function App({ game }) {
                 id: "avatar1",
                 type: "avatar",
                 fileType: "png",
-                path: "./assets/avatars/D.jpg"
+                path: "./assets/avatars/av1.png",
+                layers: [
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-background.png" },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                ]
             },
             {
                 id: "avatar2",
                 type: "avatar",
                 fileType: "png",
-                path: "./assets/avatars/E.jpg"
+                path: "./assets/avatars/D.jpg"
             },
             {
                 id: "avatar3",
+                type: "avatar",
+                fileType: "png",
+                path: "./assets/avatars/E.jpg"
+            },
+            {
+                id: "avatar4",
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/F.jpg"
@@ -98,11 +110,29 @@ function App({ game }) {
         if (step == 'avatars') {
             setShowAvatars(true)
             setShowStickers(false)
-            await fetchAvatars();
+            setShowAnimate(false)
+            setShowFX(false)
+            await fetchAvatars()
         } else if (step == 'stickers') {
             setShowAvatars(false)
             setShowStickers(true)
-            await fetchStickers();
+            setShowAnimate(false)
+            setShowFX(false)
+            await fetchStickers()
+        }
+        else if (step == 'animate') {
+            setShowAvatars(false)
+            setShowStickers(false)
+            setShowAnimate(true)
+            setShowFX(false)
+            //await fetchStickers()
+        }
+        else if (step == 'fx') {
+            setShowAvatars(false)
+            setShowStickers(false)
+            setShowAnimate(false)
+            setShowFX(true)
+            //await fetchStickers()
         }
         // TODO tell phaser to change step too
         game.events.emit('changeStep', { step: step })
@@ -137,11 +167,26 @@ function App({ game }) {
             </div>
             {/* <Menu /> */}
             <div className="steps">
-                <button onClick={(e) => { changeStep('avatars') }}>1</button>
-                <button onClick={(e) => { changeStep('stickers') }}>2</button>
-                <button onClick={(e) => { changeStep('stickers') }}>3</button>
-                <button onClick={(e) => { changeStep('stickers') }}>4</button>
-                <button onClick={getCreatedImage}>5</button>
+                <div onClick={(e) => { changeStep('avatars') }} className={`app-step-button ${showAvatars ? 'selected' : ''}`}>
+                    <label className='title'>AVATAR</label>
+                    <label className='step-number'>1</label>
+                </div>
+                <div onClick={(e) => { changeStep('stickers') }} className={`app-step-button ${showStickers ? 'selected' : ''}`}>
+                    <label className='title'>STICKER</label>
+                    <label className='step-number'>2</label>
+                </div>
+                <div onClick={(e) => { changeStep('animate') }} className={`app-step-button ${showAnimate ? 'selected' : ''}`}>
+                    <label className='title'>ANIMATE</label>
+                    <label className='step-number'>3</label>
+                </div>
+                <div onClick={(e) => { changeStep('fx') }} className={`app-step-button ${showFX ? 'selected' : ''}`}>
+                    <label className='title'>AD FX</label>
+                    <label className='step-number'>4</label>
+                </div>
+                <div onClick={getCreatedImage} className='app-step-button'>
+                    <label className='title'>EXPORT</label>
+                    <label className='step-number'>5</label>
+                </div>
             </div>
         </div >
     );

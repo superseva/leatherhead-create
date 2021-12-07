@@ -17,8 +17,9 @@ const game = new Phaser.Game({
   parent: "game",
   width: CreateConfig.stageW,
   height: CreateConfig.stageH,
-  backgroundColor: '#efefef',
+  backgroundColor: '#000000',
   preserveDrawingBuffer: true,
+
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -52,3 +53,15 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("react")
 );
+
+// Fix reading Viewport Height  for mobiles
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+// listen on resize too
+window.addEventListener('resize', () => {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+
+

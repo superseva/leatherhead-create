@@ -1,32 +1,39 @@
+$c-yellow:#edc51b;
+$c-green:#2bed1b;
+
 html,
 body, .leaderhead-app {
   margin: 0;
   padding:0;
+  
+}
+
+.background{
+  position:fixed;
+  z-index:-1;
   height: 100%;
 }
+
 .leaderhead-app{
   position: relative;
-  background-color: rebeccapurple;
+  height: 100%;
+  margin: 0;
+  padding:0;
+ // background-color: rebeccapurple;
   display: flex;
   flex-direction: column;
-  //justify-content: center;
   align-items: center;
   .game-wrap{
-    background-color: red;
-    width: 60vh;
-    height: 60vh;
-  }
- 
-  .react{   
-    width: 60vh;
-    height: 40vh;
-    //display: flex;
-   // flex:1;
-    background-color: royalblue;
-    //flex-basis: 250px;
-   
-  }
-  
+    //background-color: black;
+    width: calc(var(--vh, 1vh) * 60);
+    height: calc(var(--vh, 1vh) * 60);
+    //padding: 1rem;
+  } 
+  .react{
+    width: calc(var(--vh, 1vh) * 60);
+    height: calc(var(--vh, 1vh) * 40);
+    //background-color: royalblue;   
+  }  
 }
 
 .react-ui{
@@ -38,15 +45,37 @@ body, .leaderhead-app {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    background-color: saddlebrown;
+    justify-content: space-around;
+    background-color: black;
+    .app-step-button{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: blockhead-unplugged,sans-serif;
+      font-weight: 400;
+      font-style: normal;    
+      color:$c-yellow;
+      .step-number{
+        font-size: 2rem;
+        line-height: 2rem;
+      }
+      &.selected{
+        color:$c-green;
+      }
+    }
+    .app-step-button *{
+      cursor: pointer;
+    }
   }
 }
+
 .gallery{
+  background-color: rgba($color: #000000, $alpha: 0.3);
   display: block;
   height:100%;
   overflow-x:hidden;
-  overflow-y: scroll;  
+  overflow-y: scroll;    
   
 }
 
@@ -58,14 +87,27 @@ body, .leaderhead-app {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  //overflow: scroll;
-  margin-bottom: 30px;
-
+  justify-content: center;
+  padding-top: 1rem;
+  margin-bottom: 3rem;
+  gap: 1rem;
 }
 .thumb{
   padding: 0px;
-  margin: 20px;
-  width: 110px;
+  //margin: 20px;
+  width: 7rem;
   cursor: pointer;
 }
+
+// * PHASER HTML UI
+.phaser-ui{
+  //width:100%;
+}
+.ui-transform{
+  width: 420px;
+  background-color: royalblue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+

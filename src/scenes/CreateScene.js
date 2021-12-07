@@ -5,27 +5,87 @@ export default class CreateScene extends Phaser.Scene {
   constructor() {
     super('CreateScene')
     this.selectedObject;
-    this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
+    //this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
+    this.uiButtons = [UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
+    this.step = 'avatars';
   }
 
   preload() {
-    this.load.svg(UI.ScaleUp, './assets/ui/scale-up.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.ScaleDown, './assets/ui/scale-down.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.RotateLeft, './assets/ui/rotate-left.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.RotateRight, './assets/ui/rotate-right.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.MoveFront, './assets/ui/move-front.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.MoveBack, './assets/ui/move-back.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.Lock, './assets/ui/lock-solid.svg', { scale: CreateConfig.svgLoadScale });
-    this.load.svg(UI.Delete, './assets/ui/trash.svg', { scale: CreateConfig.svgLoadScale });
+    this.load.image(UI.ScaleUp, './assets/ui/Icon-Scale.png');
+    this.load.image(UI.ScaleDown, './assets/ui/Icon-ScaleDown.png');
+    this.load.image(UI.RotateLeft, './assets/ui/Icon-Rotate.png');
+    this.load.image(UI.RotateRight, './assets/ui/Icon-Rotate-R.png');
+    this.load.image(UI.MoveFront, './assets/ui/Icon-Layer-Up.png');
+    this.load.image(UI.MoveBack, './assets/ui/Icon-Layer-Down.png');
+    this.load.image(UI.Lock, './assets/ui/Icon-Lock.png');
+    this.load.image(UI.Delete, './assets/ui/Icon-Trash.png');
+
+    this.load.html('uiTranform', './assets/phaser-ui/transform.html');
+  }
+
+  create() {
+    // * Prep Function for the React
+    this.game.exportImage = this.exportImage;
+
+    this.postFxPlugin = this.plugins.get('rexOutlinePipeline');
+    this.initiateGestures();
+
+    // * Containers
+    this.screenZone = this.add.zone(0, 0, CreateConfig.stageW, CreateConfig.stageH);
+    this.avatarContainer = this.add.container(0, 0);
+    this.avatarContainer.name = 'avatarContainer';
+    this.stickerContainer = this.add.container(0, 0);
+    this.stickerContainer.name = 'stickerContainer';
+    this.uiContainer = this.add.container(0, 0);
+    this.uiContainer.name = 'uiContainer';
+    // * UI
+    this.transformUI = this.add.dom(0, 0).createFromCache('uiTranform');
+    this.transformUI.setOrigin(0);
+
+    this.uiBg = this.add.rectangle(0, 0, CreateConfig.stageW, 60, 0x000000)
+    this.uiBg.setAlpha(0.6)
+    this.uiBg.setOrigin(0, 0)
+    this.uiContainer.add(this.uiBg);
+    const _spacing = CreateConfig.stageW / this.uiButtons.length;
+    for (let i = 0; i < this.uiButtons.length; i++) {
+      let btn = this.add.image(_spacing * i + 20, 5, this.uiButtons[i]);
+      btn.setScale(0.2)
+      btn.name = this.uiButtons[i];
+      btn.setOrigin(0, 0);
+      btn.setInteractive()
+      btn.on('pointerdown', () => {
+        this.onBtnClick(btn);
+      });
+      this.uiContainer.add(btn);
+    }
+    this.toggleUiContainer();
+
+    //Catch the event from the React
+    this.game.events.on('addAsset', this.addObject.bind(this));
+    this.game.events.on('changeStep', this.onChangeStep.bind(this));
   }
 
   /* UI METHODS */
+  onChangeStep(context) {
+    //clear UI
+    this.step = context.step;
+    this.deselectAsset();
+    //console.warn(`STEP: ${this.step}`)
+    if (this.step == 'avatars') {
+      this.stickerContainer.setAlpha(0.2)
+    }
+    if (this.step == 'stickers') {
+      this.stickerContainer.setAlpha(1)
+    }
+
+  }
 
   onRemoveObject() {
     if (this.selectedObject) {
       this.postFxPlugin.remove(this.selectedObject);
       this.selectedObject.destroy();
-      this.selectedObject = null
+      this.selectedObject = null;
+      this.deselectAsset();
     }
   }
 
@@ -91,6 +151,15 @@ export default class CreateScene extends Phaser.Scene {
     }
   }
 
+  toggleUiContainer() {
+    if (this.selectedObject != null) {
+      this.uiContainer.setVisible(true)
+    }
+    else {
+      this.uiContainer.setVisible(false)
+    }
+  }
+
   /* OBJECTS METHODS */
 
   fitToCenter(asset) {
@@ -136,6 +205,11 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   onAssetClicked(obj) {
+    if (this.step != 'stickers') {
+      console.warn('Cant Select Assets unless in step STICKERS');
+      return;
+    }
+
 
     if (obj.getData('assetData')['type'] !== 'sticker') {
       if (this.selectedObject)
@@ -199,23 +273,9 @@ export default class CreateScene extends Phaser.Scene {
     this.toggleUiContainer();
   }
 
-  toggleUiContainer() {
-    if (this.selectedObject != null) {
-      this.uiContainer.setPosition(0, 0)
-      this.uiContainer.setVisible(true)
-    }
-    else {
-      this.uiContainer.setPosition(-500, -500)
-      this.uiContainer.setVisible(false)
-    }
-  }
 
-  create() {
 
-    this.game.exportImage = this.exportImage;
-
-    this.postFxPlugin = this.plugins.get('rexOutlinePipeline');
-    //this.dragMng = this.plugins.get('rexDrag');
+  initiateGestures() {
     this.rotate = this.rexGestures.add.rotate();
 
     this.rotate.on('rotate', function (rotate) {
@@ -243,32 +303,7 @@ export default class CreateScene extends Phaser.Scene {
         this.selectedObject.scaleY *= pinch.scaleFactor;
       }
     }, this);
-    // Containers
-    this.screenZone = this.add.zone(0, 0, CreateConfig.stageW, CreateConfig.stageH);
-    this.avatarContainer = this.add.container(0, 0);
-    this.avatarContainer.name = 'avatarContainer';
-    this.stickerContainer = this.add.container(0, 0);
-    this.stickerContainer.name = 'stickerContainer';
-    this.uiContainer = this.add.container(0, 0);
-    this.uiContainer.name = 'uiContainer';
-    //UI
-    this.uiBg = this.add.rectangle(0, 0, CreateConfig.stageW, 30, 0xffffff)
-    this.uiBg.setAlpha(0.6)
-    this.uiBg.setOrigin(0, 0)
-    this.uiContainer.add(this.uiBg);
-    for (let i = 0; i < this.uiButtons.length; i++) {
-      let btn = this.add.image(25 * i + 5, 5, this.uiButtons[i]);
-      btn.name = this.uiButtons[i];
-      btn.setOrigin(0, 0);
-      btn.setInteractive()
-      btn.on('pointerdown', () => {
-        this.onBtnClick(btn);
-      });
-      this.uiContainer.add(btn);
-    }
-    this.toggleUiContainer();
-
-    //Catch the event from the React
-    this.game.events.on('addAsset', this.addObject.bind(this));
   }
+
+
 }
