@@ -125,12 +125,4 @@ body, .leaderhead-app {
 .thumb.is-invisible {
   border: 3px solid #700a0a;
 }
-
-.ui-transform {
-  width: 420px;
-  background-color: royalblue;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 /*# sourceMappingURL=leatherhead.css.map */

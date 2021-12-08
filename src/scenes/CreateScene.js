@@ -214,24 +214,24 @@ export default class CreateScene extends Phaser.Scene {
 
   addAvatar(avatar) {
     // todo if it's already the same avatar just display it dont load it.
-    if (this.selectedAvatar.id != avatar.id) {
-      this.avatarContainer.removeAll(true);
-      let loader = new Phaser.Loader.LoaderPlugin(this);
-      avatar.layers.forEach((avatarLayer) => {
-        loader.image(avatarLayer.id, avatarLayer.path);
-      });
-      loader.once(Phaser.Loader.Events.COMPLETE, () => {
-        this.selectedAvatar.id = avatar.id
-        for (let a = 0; a < avatar.layers.length; a++) {
-          let card = this.add.image(0, 0, avatar.layers[a].id);
-          card.name = avatar.layers[a].id;
-          card.setAlpha(avatar.layers[a].visible ? 1 : 0)
-          this.fitToCenter(card)
-          this.avatarContainer.add(card)
-        }
-      })
-      loader.start();
-    }
+    // if (this.selectedAvatar.id != avatar.id) {
+    this.avatarContainer.removeAll(true);
+    let loader = new Phaser.Loader.LoaderPlugin(this);
+    avatar.layers.forEach((avatarLayer) => {
+      loader.image(avatarLayer.id, avatarLayer.path);
+    });
+    loader.once(Phaser.Loader.Events.COMPLETE, () => {
+      this.selectedAvatar.id = avatar.id
+      for (let a = 0; a < avatar.layers.length; a++) {
+        let card = this.add.image(0, 0, avatar.layers[a].id);
+        card.name = avatar.layers[a].id;
+        card.setAlpha(avatar.layers[a].visible ? 1 : 0)
+        this.fitToCenter(card)
+        this.avatarContainer.add(card)
+      }
+    })
+    loader.start();
+    //}
   }
 
   onAssetClicked(obj) {
