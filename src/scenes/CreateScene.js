@@ -83,7 +83,6 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   onAvatarLayerToggle(context) {
-    console.log(`TOGGLE LAYER ${context.id}`);
     const child = this.avatarContainer.getByName(context.id);
     if (!child)
       return;
@@ -216,7 +215,6 @@ export default class CreateScene extends Phaser.Scene {
     this.avatarContainer.removeAll(true);
     let loader = new Phaser.Loader.LoaderPlugin(this);
     avatar.layers.forEach((avatarLayer) => {
-      console.log(avatarLayer);
       loader.image(avatarLayer.id, avatarLayer.path);
     });
     loader.once(Phaser.Loader.Events.COMPLETE, () => {
@@ -225,7 +223,6 @@ export default class CreateScene extends Phaser.Scene {
       //});
       console.log('LOADING COMPLETED')
       for (let a = 0; a < avatar.layers.length; a++) {
-        console.log(avatar.layers[a].id)
         let card = this.add.image(0, 0, avatar.layers[a].id);
         card.name = avatar.layers[a].id;
         this.fitToCenter(card)
