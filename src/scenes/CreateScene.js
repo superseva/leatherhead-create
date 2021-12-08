@@ -5,6 +5,7 @@ export default class CreateScene extends Phaser.Scene {
   constructor() {
     super('CreateScene')
     this.selectedObject;
+    this.selectedAvatar = {};
     //this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
     this.uiButtons = [UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
     this.step = 'avatars';
@@ -212,24 +213,25 @@ export default class CreateScene extends Phaser.Scene {
   }
 
   addAvatar(avatar) {
-    this.avatarContainer.removeAll(true);
-    let loader = new Phaser.Loader.LoaderPlugin(this);
-    avatar.layers.forEach((avatarLayer) => {
-      loader.image(avatarLayer.id, avatarLayer.path);
-    });
-    loader.once(Phaser.Loader.Events.COMPLETE, () => {
-      //avatar.layers.forEach((avatarLayer) => {
-      //this.avatarContainer.add(avatarLayer.id);
-      //});
-      console.log('LOADING COMPLETED')
-      for (let a = 0; a < avatar.layers.length; a++) {
-        let card = this.add.image(0, 0, avatar.layers[a].id);
-        card.name = avatar.layers[a].id;
-        this.fitToCenter(card)
-        this.avatarContainer.add(card)
-      }
-    })
-    loader.start();
+    // todo if it's already the same avatar just display it dont load it.
+    if (this.selectedAvatar.id != avatar.id) {
+      this.avatarContainer.removeAll(true);
+      let loader = new Phaser.Loader.LoaderPlugin(this);
+      avatar.layers.forEach((avatarLayer) => {
+        loader.image(avatarLayer.id, avatarLayer.path);
+      });
+      loader.once(Phaser.Loader.Events.COMPLETE, () => {
+        this.selectedAvatar.id = avatar.id
+        for (let a = 0; a < avatar.layers.length; a++) {
+          let card = this.add.image(0, 0, avatar.layers[a].id);
+          card.name = avatar.layers[a].id;
+          card.setAlpha(avatar.layers[a].visible ? 1 : 0)
+          this.fitToCenter(card)
+          this.avatarContainer.add(card)
+        }
+      })
+      loader.start();
+    }
   }
 
   onAssetClicked(obj) {

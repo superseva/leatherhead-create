@@ -51,7 +51,7 @@ body, .leaderhead-app {
     cursor: pointer;
     margin-top: 2rem;
     margin-left: 2rem;  
-    background-image: url('./assets/ui/btn-edit.png');
+   
   }
 }
 
@@ -120,6 +120,12 @@ body, .leaderhead-app {
   //margin: 20px;
   width: 7rem;
   cursor: pointer;
+  &.is-visible{
+    border: 3px solid white;
+  }
+  &.is-invisible{
+    border: 3px solid rgb(112, 10, 10);
+  }
 }
 
 // * PHASER HTML UI

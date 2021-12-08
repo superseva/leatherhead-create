@@ -1,7 +1,7 @@
 import React from 'react'
-const Thumb = ({ thumb, onThumbClick }) => {
+const Thumb = ({ thumb, onThumbClick, groupId }) => {
     return (
-        <img className='thumb' src={thumb.path} onClick={() => onThumbClick(thumb)}></img>
+        <img className={thumb.visible ? "thumb is-visible" : "thumb is-invisibile"} src={thumb.thumb} onClick={() => onThumbClick(thumb, groupId)}></img>
     )
 }
 

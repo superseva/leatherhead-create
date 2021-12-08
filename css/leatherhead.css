@@ -45,7 +45,6 @@ body, .leaderhead-app {
   cursor: pointer;
   margin-top: 2rem;
   margin-left: 2rem;
-  /* background-image: url("../dist/assets/ui/btn-edit.png"); */
 }
 
 .react-ui {
@@ -117,6 +116,14 @@ body, .leaderhead-app {
   padding: 0px;
   width: 7rem;
   cursor: pointer;
+}
+
+.thumb.is-visible {
+  border: 3px solid white;
+}
+
+.thumb.is-invisible {
+  border: 3px solid #700a0a;
 }
 
 .ui-transform {

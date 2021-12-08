@@ -11,7 +11,7 @@ const App = ({ game }) => {
 
 
     const [showStep, setShowStep] = useState(AppSteps.Avatars);
-    const [selectedAvatar, setSelectedAvatar] = useState(null)
+    const [selectedAvatar, setSelectedAvatar] = useState(-1)
 
     // LOAD AVATARS ON LOAD
     useEffect(() => {
@@ -31,11 +31,12 @@ const App = ({ game }) => {
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
+                thumb: "./assets/avatars/av1.png",
                 layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
-                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
-                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
-                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png", thumb: "./assets/avatars/av1-bg.png", visible: true },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png", thumb: "./assets/avatars/av1-body.png", visible: true },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png", thumb: "./assets/avatars/av1-mask.png", visible: true },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png", thumb: "./assets/avatars/av1-mask.png", visible: true }
                 ]
             },
             {
@@ -43,47 +44,12 @@ const App = ({ game }) => {
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
+                thumb: "./assets/avatars/av1.png",
                 layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
-                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
-                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
-                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
-                ]
-            },
-            {
-                id: "avatar3",
-                type: "avatar",
-                fileType: "png",
-                path: "./assets/avatars/av1.png",
-                layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
-                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
-                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
-                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
-                ]
-            },
-            {
-                id: "avatar4",
-                type: "avatar",
-                fileType: "png",
-                path: "./assets/avatars/av1.png",
-                layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
-                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
-                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
-                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
-                ]
-            },
-            {
-                id: "avatar5",
-                type: "avatar",
-                fileType: "png",
-                path: "./assets/avatars/av1.png",
-                layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
-                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
-                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
-                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png", thumb: "./assets/avatars/av1-bg.png", visible: true },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png", thumb: "./assets/avatars/av1-body.png", visible: true },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png", thumb: "./assets/avatars/av1-mask.png", visible: true },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png", thumb: "./assets/avatars/av1-mask.png", visible: true }
                 ]
             }
         ]
@@ -99,37 +65,43 @@ const App = ({ game }) => {
                 id: "s1",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/PipeDream.png"
+                path: "./assets/stickers/PipeDream.png",
+                thumb: "./assets/stickers/PipeDream.png"
             },
             {
                 id: "s2",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/ComedyCentral.png"
+                path: "./assets/stickers/ComedyCentral.png",
+                thumb: "./assets/stickers/ComedyCentral.png"
             },
             {
                 id: "s3",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/Moo.png"
+                path: "./assets/stickers/Moo.png",
+                thumb: "./assets/stickers/Moo.png"
             },
             {
                 id: "s4",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/PipeDream.png"
+                path: "./assets/stickers/PipeDream.png",
+                thumb: "./assets/stickers/PipeDream.png"
             },
             {
                 id: "s5",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/ComedyCentral.png"
+                path: "./assets/stickers/ComedyCentral.png",
+                thumb: "./assets/stickers/ComedyCentral.png"
             },
             {
                 id: "s6",
                 type: "sticker",
                 fileType: "png",
-                path: "./assets/stickers/Moo.png"
+                path: "./assets/stickers/Moo.png",
+                thumb: "./assets/stickers/Moo.png"
             }
         ]
         setStickers(data);
@@ -144,16 +116,19 @@ const App = ({ game }) => {
 
     useEffect(async () => {
         if (showStep == AppSteps.Avatars) {
-            await fetchAvatars()
+            if (!avatars.length)
+                await fetchAvatars()
         }
         else if (showStep == AppSteps.Stickers) {
-            await fetchStickers()
+            if (!stickers.length)
+                await fetchStickers()
         }
     }, [showStep])
 
-    let onAvatarClick = (asset) => {
-        setSelectedAvatar(asset)
-        game.events.emit('addAvatar', asset);
+    let onAvatarClick = (avatar) => {
+        let avatarIndex = avatars.findIndex(av => av.id === avatar.id)
+        setSelectedAvatar(avatarIndex)
+        game.events.emit('addAvatar', avatar);
     }
 
     let onStickerClick = (asset) => {
@@ -161,10 +136,35 @@ const App = ({ game }) => {
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
-    let onAvatarLayerToggle = (layer) => {
-        console.log(layer);
+    let onAvatarLayerToggle = (layer, groupId) => {
+        // console.log(groupId);
+        //console.log(layer);
+        let newarray = avatars.map((avatar) => avatar.id === groupId ?
+            modifyLayers(avatar, layer) : avatar
+        )
+
+        setAvatars(newarray)
+        //(lyr) => lyr.id === layer.id ? { ...lyr, visible: !lyr.visible } : lyr
         game.events.emit('avatarLayerToggle', layer)
+        // console.warn(newarray)
     }
+
+    const modifyLayers = (a, layer) => {
+        //a.layers.map()
+        console.warn(layer.id);
+        const modA = { ...a }
+        console.warn(modA.layers)
+        modA.layers.map((lyr) => {
+            if (lyr.id === layer.id)
+                lyr.visible = !layer.visible
+            return lyr
+            //lyr.id === layer.id ? { ...lyr, visible: !lyr.visible } : lyr
+        })
+        console.warn(modA.layers)
+        return modA
+    }
+
+
     //Get json data cotaining used layers and prepared Base64 png from creator
     const getCreatedImage = async () => {
         try {
@@ -177,12 +177,12 @@ const App = ({ game }) => {
 
     return (
         <>
-            {showStep == AppSteps.Avatars && selectedAvatar ?
+            {showStep == AppSteps.Avatars && selectedAvatar > -1 ?
                 <div className="avatar-toolbar">
                     <img className='edit-btn' src='./assets/ui/btn-edit.png' onClick={(e) => { changeStep(AppSteps.AvatarLayers) }} />
                 </div> : ''
             }
-            {showStep == AppSteps.AvatarLayers && selectedAvatar ?
+            {showStep == AppSteps.AvatarLayers && selectedAvatar > -1 ?
                 <div className="avatar-toolbar">
                     <img className='edit-btn' src='./assets/ui/btn-edit-exit.png' onClick={(e) => { changeStep(AppSteps.Avatars) }} />
                 </div> : ''
@@ -190,7 +190,7 @@ const App = ({ game }) => {
             <div className="react-ui">
                 <div className='gallery'>
                     {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
-                    {showStep == AppSteps.AvatarLayers ? <Thumbs thumbs={selectedAvatar.layers} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
+                    {showStep == AppSteps.AvatarLayers ? <Thumbs thumbs={avatars[selectedAvatar].layers} groupId={avatars[selectedAvatar].id} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
                     {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
                 </div>
                 {/* <Menu /> */}
