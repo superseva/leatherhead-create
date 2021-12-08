@@ -51,7 +51,7 @@ const App = ({ game }) => {
                 ]
             },
             {
-                id: "avatar2",
+                id: "avatar3",
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
@@ -63,7 +63,7 @@ const App = ({ game }) => {
                 ]
             },
             {
-                id: "avatar2",
+                id: "avatar4",
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
@@ -75,7 +75,7 @@ const App = ({ game }) => {
                 ]
             },
             {
-                id: "avatar2",
+                id: "avatar5",
                 type: "avatar",
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
@@ -152,9 +152,8 @@ const App = ({ game }) => {
     }, [showStep])
 
     let onAvatarClick = (asset) => {
-        console.warn(asset);
         setSelectedAvatar(asset)
-        game.events.emit('addAsset', { id: asset.id, type: 'avatar', fileType: asset.fileType, path: asset.path });
+        game.events.emit('addAvatar', asset);
     }
 
     let onStickerClick = (asset) => {
@@ -163,7 +162,8 @@ const App = ({ game }) => {
     }
 
     let onAvatarLayerToggle = (layer) => {
-        console.log(layer)
+        console.log(layer);
+        game.events.emit('avatarLayerToggle', layer)
     }
     //Get json data cotaining used layers and prepared Base64 png from creator
     const getCreatedImage = async () => {

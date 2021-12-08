@@ -61,7 +61,9 @@ export default class CreateScene extends Phaser.Scene {
     this.toggleUiContainer();
 
     //Catch the event from the React
-    this.game.events.on('addAsset', this.addObject.bind(this));
+    this.game.events.on('addAsset', this.addAsset.bind(this));
+    this.game.events.on('addAvatar', this.addAvatar.bind(this));
+    this.game.events.on('avatarLayerToggle', this.onAvatarLayerToggle.bind(this));
     this.game.events.on('changeStep', this.onChangeStep.bind(this));
   }
 
@@ -78,6 +80,15 @@ export default class CreateScene extends Phaser.Scene {
       this.stickerContainer.setAlpha(1)
     }
 
+  }
+
+  onAvatarLayerToggle(context) {
+    console.log(`TOGGLE LAYER ${context.id}`);
+    const child = this.avatarContainer.getByName(context.id);
+    if (!child)
+      return;
+
+    child.setAlpha(child.alpha < 1 ? 1 : 0)
   }
 
   onRemoveObject() {
@@ -178,15 +189,13 @@ export default class CreateScene extends Phaser.Scene {
     asset.setPosition(x, y)
   }
 
-  addObject({ id, type, fileType, path }) {
-
+  addAsset({ id, type, fileType, path }) {
     const card = this.add.image(0, 0, id);
     card.setData('assetData', { ...arguments[0] })
     card.setData('locked', false)
     let loader = new Phaser.Loader.LoaderPlugin(this);
     loader.image(id, path);
     loader.once(Phaser.Loader.Events.COMPLETE, () => {
-      //card.setData('data', { ...id, type, fileType, path })
       card.setTexture(id)
       if (type == 'avatar') {
         this.avatarContainer.removeAll(true);
@@ -196,11 +205,33 @@ export default class CreateScene extends Phaser.Scene {
         card.setData('type', 'sticker')
         this.stickerContainer.add(card)
       }
-
       this.fitToCenter(card)
       card.setInteractive({ pixelPerfect: true, alphaTolerance: 1 });
       card.on('pointerdown', () => { this.onAssetClicked(card) });
     });
+    loader.start();
+  }
+
+  addAvatar(avatar) {
+    this.avatarContainer.removeAll(true);
+    let loader = new Phaser.Loader.LoaderPlugin(this);
+    avatar.layers.forEach((avatarLayer) => {
+      console.log(avatarLayer);
+      loader.image(avatarLayer.id, avatarLayer.path);
+    });
+    loader.once(Phaser.Loader.Events.COMPLETE, () => {
+      //avatar.layers.forEach((avatarLayer) => {
+      //this.avatarContainer.add(avatarLayer.id);
+      //});
+      console.log('LOADING COMPLETED')
+      for (let a = 0; a < avatar.layers.length; a++) {
+        console.log(avatar.layers[a].id)
+        let card = this.add.image(0, 0, avatar.layers[a].id);
+        card.name = avatar.layers[a].id;
+        this.fitToCenter(card)
+        this.avatarContainer.add(card)
+      }
+    })
     loader.start();
   }
 
