@@ -11,6 +11,7 @@ export const UI = {
 
 export const AppSteps = {
     Avatars: 'Avatars',
+    AvatarLayers: 'AvatarLayers',
     Stickers: 'Stickers',
     Animate: 'Animate',
     FX: 'FX',

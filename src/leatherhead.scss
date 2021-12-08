@@ -25,20 +25,44 @@ body, .leaderhead-app {
   align-items: center;
   .game-wrap{
     //background-color: black;
+    position: relative;
     width: calc(var(--vh, 1vh) * 60);
     height: calc(var(--vh, 1vh) * 60);
     //padding: 1rem;
+    .game{
+      position: relative;
+      z-index: 101;
+    }
   } 
   .react{
-    width: calc(var(--vh, 1vh) * 60);
-    height: calc(var(--vh, 1vh) * 40);
-    //background-color: royalblue;   
+    position: absolute;
+    //z-index: 50;
+    //width: calc(var(--vh, 1vh) * 60);
+    //height: calc(var(--vh, 1vh) * 40);
   }  
 }
 
+
+.avatar-toolbar{
+  position: absolute;
+  display: flex;
+  z-index: 500;
+  .edit-btn{
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-left: 2rem;  
+    //background-image: url('assets/ui/btn-edit.png');
+  }
+}
+
+
 .react-ui{
   position: relative;
+  z-index: 50;
   height: 100%;
+  margin-top:calc(var(--vh, 1vh) * 60) ;
+  width: calc(var(--vh, 1vh) * 60);
+  height: calc(var(--vh, 1vh) * 40);
   .steps{
     position: absolute;
     bottom: 0;
@@ -76,7 +100,6 @@ body, .leaderhead-app {
   height:100%;
   overflow-x:hidden;
   overflow-y: scroll;    
-  
 }
 
 ::-webkit-scrollbar {

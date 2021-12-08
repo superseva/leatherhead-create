@@ -11,6 +11,7 @@ const App = ({ game }) => {
 
 
     const [showStep, setShowStep] = useState(AppSteps.Avatars);
+    const [selectedAvatar, setSelectedAvatar] = useState(null)
 
     // LOAD AVATARS ON LOAD
     useEffect(() => {
@@ -31,7 +32,7 @@ const App = ({ game }) => {
                 fileType: "png",
                 path: "./assets/avatars/av1.png",
                 layers: [
-                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-background.png" },
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
                     { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
                     { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
                     { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
@@ -41,19 +42,49 @@ const App = ({ game }) => {
                 id: "avatar2",
                 type: "avatar",
                 fileType: "png",
-                path: "./assets/avatars/D.jpg"
+                path: "./assets/avatars/av1.png",
+                layers: [
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                ]
             },
             {
-                id: "avatar3",
+                id: "avatar2",
                 type: "avatar",
                 fileType: "png",
-                path: "./assets/avatars/E.jpg"
+                path: "./assets/avatars/av1.png",
+                layers: [
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                ]
             },
             {
-                id: "avatar4",
+                id: "avatar2",
                 type: "avatar",
                 fileType: "png",
-                path: "./assets/avatars/F.jpg"
+                path: "./assets/avatars/av1.png",
+                layers: [
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                ]
+            },
+            {
+                id: "avatar2",
+                type: "avatar",
+                fileType: "png",
+                path: "./assets/avatars/av1.png",
+                layers: [
+                    { id: "layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png" },
+                    { id: "layer-body", fileType: "png", path: "./assets/avatars/av1-body.png" },
+                    { id: "layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png" },
+                    { id: "layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png" },
+                ]
             }
         ]
         setAvatars(data);
@@ -106,26 +137,24 @@ const App = ({ game }) => {
 
     let changeStep = async (step) => {
         setShowStep(step)
-        if (step == AppSteps.Avatars) {
-            console.warn('alo')
-            await fetchAvatars()
-        } else if (step == AppSteps.Stickers) {
-            await fetchStickers()
-        }
-        else if (step == AppSteps.Animate) {
-
-        }
-        else if (step == AppSteps.FX) {
-
-        }
         // TODO tell phaser to change step too
         game.events.emit('changeStep', { step: step })
 
     }
 
+    useEffect(async () => {
+        if (showStep == AppSteps.Avatars) {
+            await fetchAvatars()
+        }
+        else if (showStep == AppSteps.Stickers) {
+            await fetchStickers()
+        }
+    }, [showStep])
+
     let onAvatarClick = (asset) => {
-        // console.log(asset);
-        game.events.emit('addAsset', { id: asset.id, type: 'avatar', fileType: asset.fileType, path: asset.path })
+        console.warn(asset);
+        setSelectedAvatar(asset)
+        game.events.emit('addAsset', { id: asset.id, type: 'avatar', fileType: asset.fileType, path: asset.path });
     }
 
     let onStickerClick = (asset) => {
@@ -133,6 +162,9 @@ const App = ({ game }) => {
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
+    let onAvatarLayerToggle = (layer) => {
+        console.log(layer)
+    }
     //Get json data cotaining used layers and prepared Base64 png from creator
     const getCreatedImage = async () => {
         try {
@@ -144,35 +176,48 @@ const App = ({ game }) => {
     }
 
     return (
-        <div className="react-ui">
-            <div className='gallery'>
-                {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
-                {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
-            </div>
-            {/* <Menu /> */}
-            <div className="steps">
-                <div onClick={(e) => { changeStep(AppSteps.Avatars) }} className={`app-step-button ${showStep == AppSteps.Avatars ? 'selected' : ''}`}>
-                    <label className='title'>AVATAR</label>
-                    <label className='step-number'>1</label>
+        <>
+            {showStep == AppSteps.Avatars && selectedAvatar ?
+                <div className="avatar-toolbar">
+                    <img className='edit-btn' src='./assets/ui/btn-edit.png' onClick={(e) => { changeStep(AppSteps.AvatarLayers) }} />
+                </div> : ''
+            }
+            {showStep == AppSteps.AvatarLayers && selectedAvatar ?
+                <div className="avatar-toolbar">
+                    <img className='edit-btn' src='./assets/ui/btn-edit-exit.png' onClick={(e) => { changeStep(AppSteps.Avatars) }} />
+                </div> : ''
+            }
+            <div className="react-ui">
+                <div className='gallery'>
+                    {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
+                    {showStep == AppSteps.AvatarLayers ? <Thumbs thumbs={selectedAvatar.layers} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
+                    {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
                 </div>
-                <div onClick={(e) => { changeStep(AppSteps.Stickers) }} className={`app-step-button ${showStep == AppSteps.Stickers ? 'selected' : ''}`}>
-                    <label className='title'>STICKER</label>
-                    <label className='step-number'>2</label>
+                {/* <Menu /> */}
+                <div className="steps">
+                    <div onClick={(e) => { changeStep(AppSteps.Avatars) }} className={`app-step-button ${showStep == AppSteps.Avatars ? 'selected' : ''}`}>
+                        <label className='title'>AVATAR</label>
+                        <label className='step-number'>1</label>
+                    </div>
+                    <div onClick={(e) => { changeStep(AppSteps.Stickers) }} className={`app-step-button ${showStep == AppSteps.Stickers ? 'selected' : ''}`}>
+                        <label className='title'>STICKER</label>
+                        <label className='step-number'>2</label>
+                    </div>
+                    <div onClick={(e) => { changeStep(AppSteps.Animate) }} className={`app-step-button ${showStep == AppSteps.Animate ? 'selected' : ''}`}>
+                        <label className='title'>ANIMATE</label>
+                        <label className='step-number'>3</label>
+                    </div>
+                    <div onClick={(e) => { changeStep(AppSteps.FX) }} className={`app-step-button ${showStep == AppSteps.FX ? 'selected' : ''}`}>
+                        <label className='title'>AD FX</label>
+                        <label className='step-number'>4</label>
+                    </div>
+                    <div onClick={getCreatedImage} className='app-step-button'>
+                        <label className='title'>EXPORT</label>
+                        <label className='step-number'>5</label>
+                    </div>
                 </div>
-                <div onClick={(e) => { changeStep(AppSteps.Animate) }} className={`app-step-button ${showStep == AppSteps.Animate ? 'selected' : ''}`}>
-                    <label className='title'>ANIMATE</label>
-                    <label className='step-number'>3</label>
-                </div>
-                <div onClick={(e) => { changeStep(AppSteps.FX) }} className={`app-step-button ${showStep == AppSteps.FX ? 'selected' : ''}`}>
-                    <label className='title'>AD FX</label>
-                    <label className='step-number'>4</label>
-                </div>
-                <div onClick={getCreatedImage} className='app-step-button'>
-                    <label className='title'>EXPORT</label>
-                    <label className='step-number'>5</label>
-                </div>
-            </div>
-        </div >
+            </div >
+        </>
     );
 }
 
