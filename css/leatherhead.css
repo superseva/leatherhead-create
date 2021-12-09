@@ -132,13 +132,49 @@ body, .leaderhead-app {
   border: 3px dashed #2b37a7;
 }
 
-.thumb-effect {
+.effect-galery {
+  display: flex;
+  flex-direction: row;
+}
+
+.effect-galery .effect-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.effect-galery .effect-list h3 {
+  color: white;
+  font-family: blockhead-unplugged,sans-serif;
+}
+
+.effect-galery .effect-list .thumb-effect {
   color: white;
   font-family: blockhead-unplugged,sans-serif;
   cursor: pointer;
 }
 
-.thumb-effect.selected {
+.effect-galery .effect-list .thumb-effect.selected {
   color: #ee9b00;
+}
+
+button {
+  color: #E8CE00;
+  font-size: 1rem;
+  line-height: 1rem;
+  padding: 0 0.5rem 0.375rem 0.25rem;
+  font-family: blockhead-unplugged,sans-serif;
+  background: rgba(112, 26, 230, 0.75);
+  box-shadow: 0.2rem 0.2rem rgba(230, 104, 26, 0.75);
+  border: none;
+  margin-bottom: 0.5rem;
+}
+
+button:hover {
+  filter: drop-shadow(0 0 0.313rem rgba(247, 223, 0, 0.64));
+  color: orange;
 }
 /*# sourceMappingURL=leatherhead.css.map */

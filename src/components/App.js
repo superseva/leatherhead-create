@@ -6,18 +6,22 @@ import Menu from "./Menu";
 import Thumbs from "./Thumbs";
 import LayerThumbs from "./LayerThumbs";
 import EffectsList from "./EffectsList";
+import { CreateConfig } from "../scenes/Config";
 
 import "babel-polyfill";
 
 const App = ({ game }) => {
 
-
+    /* STATES */
     const [showStep, setShowStep] = useState(AppSteps.Avatars);
     const [selectedAvatar, setSelectedAvatar] = useState(-1)
-    const [fxToAvatar, setFxToAvatar] = useState(true)
-    const [fxToStickers, setFxToStickers] = useState(true)
+    const [avatars, setAvatars] = useState([])
+    const [stickers, setStickers] = useState([])
+    const [selectedAvatarEffect, setSelectedAvatarEffect] = useState('')
+    const [selectedStickersEffect, setSelectedStickersEffect] = useState('')
+    const [effects, setEffects] = useState({ avatarFXList: [], stickersFXList: [] })
 
-    // LOAD AVATARS ON LOAD
+    /* LOAD AVATARS ON START */
     useEffect(() => {
         const getAvatars = async () => {
             await changeStep(AppSteps.Avatars)
@@ -25,7 +29,7 @@ const App = ({ game }) => {
         getAvatars();
     }, [])
 
-    const [avatars, setAvatars] = useState([])
+    /* FETCH RESONSES FROM SERVER */
     const fetchAvatars = async () => {
         //const res = await fetch("http://localhost:5000/avatars")
         //const data = await res.json();
@@ -59,7 +63,6 @@ const App = ({ game }) => {
         setAvatars(data);
     }
 
-    const [stickers, setStickers] = useState([])
     const fetchStickers = async () => {
         //const res = await fetch("http://localhost:5000/stickers")
         // const data = await res.json();
@@ -110,28 +113,47 @@ const App = ({ game }) => {
         setStickers(data);
     }
 
-    const [selectedEffect, setSelectedEffect] = useState('')
-    const [effects, setEffects] = useState([])
     const fetchEffects = async () => {
         //const res = await fetch("http://localhost:5000/effects")
         //const data = await res.json();
-        const data = [
-            { id: 'crossstich', name: 'Cross-stitching' },
-            { id: 'pixelation', name: 'Pixelation' },
-            { id: 'toonify', name: 'Toonify' },
-            { id: 'fisheye', name: 'Fish eye' },
-            { id: 'kawaseblur', name: 'Kawase-blur' }
-        ]
+        const data = {
+            avatarFXList: [
+                { id: 'rexCrossStitchingPipeline', name: 'Cross-stitching' },
+                { id: 'rexPixelationPipeline', name: 'Pixelation' },
+                { id: 'rexToonifyPipeline', name: 'Toonify' },
+                {
+                    id: 'rexFishEyePipeline', name: 'Fish eye', config: {
+                        center: { x: CreateConfig.stageW / 2, y: CreateConfig.stageH / 2 },
+                        radius: CreateConfig.stageW,
+                        intensity: 0.5,
+                        mode: 1
+                    }
+                }
+            ],
+            stickersFXList: [
+                { id: 'rexPixelationPipeline', name: 'Pixelation' },
+                { id: 'rexToonifyPipeline', name: 'Toonify' },
+                {
+                    id: 'rexFishEyePipeline', name: 'Fish eye', config: {
+                        center: { x: CreateConfig.stageW / 2, y: CreateConfig.stageH / 2 },
+                        radius: CreateConfig.stageW,
+                        intensity: 0.5,
+                        mode: 1
+                    }
+                }
+            ]
+        }
+
         setEffects(data);
     }
 
+    /* Changing Application Step */
+    //change step state and update Phaser
     let changeStep = async (step) => {
         setShowStep(step)
-        // TODO tell phaser to change step too
         game.events.emit('changeStep', { step: step })
-
     }
-
+    // react when app step state changes
     useEffect(async () => {
         if (showStep == AppSteps.Avatars) {
             if (!avatars.length)
@@ -142,27 +164,47 @@ const App = ({ game }) => {
                 await fetchStickers()
         }
         else if (showStep == AppSteps.FX) {
-            if (!stickers.length)
+            if (!effects.avatarFXList.length)
                 await fetchEffects()
         }
     }, [showStep])
 
+    /* Tell Phaser to load the selected avatar */
     let onAvatarClick = (avatar) => {
         let avatarIndex = avatars.findIndex(av => av.id === avatar.id)
         setSelectedAvatar(avatarIndex)
         game.events.emit('addAvatar', avatar);
     }
 
+    /* Tell Phaser to load the selected sticker */
     let onStickerClick = (asset) => {
-        //  console.log(asset);
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
-    let onFXClick = (effect) => {
-        setSelectedEffect(effect.id)
-        game.events.emit('addFX', effect)
+    /* Tell Phaser to activate avatar FX */
+    let onAvatarFXClick = (effect) => {
+        if (selectedAvatarEffect == effect.id) {
+            setSelectedAvatarEffect('')
+            game.events.emit('removeFX', { ...effect, container: 'avatar' })
+        } else {
+            setSelectedAvatarEffect(effect.id)
+            game.events.emit('addFX', { ...effect, container: 'avatar' })
+        }
     }
 
+    /* Tell Phaser to activate sticker FX */
+    let onStickersFXClick = (effect) => {
+        console.log(effect)
+        if (selectedStickersEffect == effect.id) {
+            setSelectedStickersEffect('')
+            game.events.emit('removeFX', { ...effect, container: 'stickers' })
+        } else {
+            setSelectedStickersEffect(effect.id)
+            game.events.emit('addFX', { ...effect, container: 'stickers' })
+        }
+    }
+
+    /* Toggle the Visibility of the Avatar's Layer */
     let onAvatarLayerToggle = (layer, groupId) => {
         let newarray = avatars.map((avatar) => avatar.id === groupId ?
             modifyLayers(avatar, layer) : avatar
@@ -177,13 +219,11 @@ const App = ({ game }) => {
             if (lyr.id === layer.id)
                 lyr.visible = !layer.visible
             return lyr
-            //lyr.id === layer.id ? { ...lyr, visible: !lyr.visible } : lyr
         })
         return modA
     }
 
-
-    //Get json data cotaining used layers and prepared Base64 png from creator
+    /* Get JSON data cotaining used layers and prepared Base64 png from creator */
     const getCreatedImage = async () => {
         try {
             const createdData = await game.exportImage();
@@ -192,6 +232,8 @@ const App = ({ game }) => {
             console.log(e)
         }
     }
+
+    /* RENDER */
 
     return (
         <>
@@ -210,9 +252,21 @@ const App = ({ game }) => {
                     {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
                     {showStep == AppSteps.AvatarLayers ? <LayerThumbs thumbs={avatars[selectedAvatar].layers} groupId={avatars[selectedAvatar].id} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
                     {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
-                    {showStep == AppSteps.FX ? <EffectsList thumbs={effects} onThumbClick={onFXClick} groupName='effects' selectedEffect={selectedEffect} /> : ''}
+                    {showStep == AppSteps.FX ?
+                        <div className='effect-galery'>
+                            <div className='effect-list'>
+                                <h3>Avatar Effects</h3>
+                                <EffectsList thumbs={effects.avatarFXList} onThumbClick={onAvatarFXClick} groupName='effects' selectedEffect={selectedAvatarEffect} />
+                            </div>
+                            <div className='effect-list'>
+                                <h3>Stickers Effects</h3>
+                                <EffectsList thumbs={effects.stickersFXList} onThumbClick={onStickersFXClick} groupName='effects' selectedEffect={selectedStickersEffect} />
+                            </div>
+                        </div>
+                        : ''}
+
                 </div>
-                {/* <Menu /> */}
+
                 <div className="steps">
                     <div onClick={(e) => { changeStep(AppSteps.Avatars) }} className={`app-step-button ${showStep == AppSteps.Avatars ? 'selected' : ''}`}>
                         <label className='title'>AVATAR</label>
