@@ -9,6 +9,8 @@ export default class CreateScene extends Phaser.Scene {
     //this.uiButtons = [UI.ScaleUp, UI.ScaleDown, UI.RotateLeft, UI.RotateRight, UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
     this.uiButtons = [UI.MoveFront, UI.MoveBack, UI.Lock, UI.Delete];
     this.step = 'avatars';
+
+
   }
 
   preload() {
@@ -21,7 +23,7 @@ export default class CreateScene extends Phaser.Scene {
     this.load.image(UI.Lock, './assets/ui/Icon-Lock.png');
     this.load.image(UI.Delete, './assets/ui/Icon-Trash.png');
 
-    this.load.html('uiTranform', './assets/phaser-ui/transform.html');
+
   }
 
   create() {
@@ -66,6 +68,8 @@ export default class CreateScene extends Phaser.Scene {
     this.game.events.on('addAvatar', this.addAvatar.bind(this));
     this.game.events.on('avatarLayerToggle', this.onAvatarLayerToggle.bind(this));
     this.game.events.on('changeStep', this.onChangeStep.bind(this));
+    this.game.events.on('addFX', this.onFXSelected.bind(this));
+
   }
 
   /* UI METHODS */
@@ -89,6 +93,29 @@ export default class CreateScene extends Phaser.Scene {
       return;
 
     child.setAlpha(child.alpha < 1 ? 1 : 0)
+  }
+
+  onFXSelected() {
+    //this.pipelineInstance = this.plugins.get('rexCrossStitchingPipeline');
+    this.plugins.get('rexCrossStitchingPipeline').add(this.avatarContainer);
+    this.plugins.get('rexCrossStitchingPipeline').add(this.stickerContainer);
+    //this.plugins.get('rexPixelationPipeline').add(this.cameras.main);
+    // this.plugins.get('rexToonifyPipeline').add(this.cameras.main);
+    // this.plugins.get('rexFishEyePipeline').add(this.avatarContainer,
+    //   {
+    //     center: { x: CreateConfig.stageW / 2, y: CreateConfig.stageH / 2 },
+    //     radius: CreateConfig.stageW,
+    //     intensity: 0.5,
+    //     mode: 1
+    //   }
+    // );
+    // mode:0,  // 0|1|'asin'|'sin'}
+
+    //var postFxPlugin = this.plugins.get('rexcrossstitchingpipelineplugin');
+    //var customPipeline = postFxPlugin.add(this.cameras.main);
+    //var pipelineInstance = scene.plugins.get('rexCrossStitchingPipeline').add(gameObject, config);
+
+    //var pipelineInstance = this.plugins.get('rexCrossStitchingPipeline').add(gameObject, config);
   }
 
   onRemoveObject() {

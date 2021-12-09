@@ -131,4 +131,14 @@ body, .leaderhead-app {
 .thumb-layer.deselected {
   border: 3px dashed #2b37a7;
 }
+
+.thumb-effect {
+  color: white;
+  font-family: blockhead-unplugged,sans-serif;
+  cursor: pointer;
+}
+
+.thumb-effect.selected {
+  color: #ee9b00;
+}
 /*# sourceMappingURL=leatherhead.css.map */

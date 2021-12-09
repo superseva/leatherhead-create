@@ -5,6 +5,7 @@ import { AppSteps } from "../scenes/Config";
 import Menu from "./Menu";
 import Thumbs from "./Thumbs";
 import LayerThumbs from "./LayerThumbs";
+import EffectsList from "./EffectsList";
 
 import "babel-polyfill";
 
@@ -13,6 +14,8 @@ const App = ({ game }) => {
 
     const [showStep, setShowStep] = useState(AppSteps.Avatars);
     const [selectedAvatar, setSelectedAvatar] = useState(-1)
+    const [fxToAvatar, setFxToAvatar] = useState(true)
+    const [fxToStickers, setFxToStickers] = useState(true)
 
     // LOAD AVATARS ON LOAD
     useEffect(() => {
@@ -107,6 +110,21 @@ const App = ({ game }) => {
         setStickers(data);
     }
 
+    const [selectedEffect, setSelectedEffect] = useState('')
+    const [effects, setEffects] = useState([])
+    const fetchEffects = async () => {
+        //const res = await fetch("http://localhost:5000/effects")
+        //const data = await res.json();
+        const data = [
+            { id: 'crossstich', name: 'Cross-stitching' },
+            { id: 'pixelation', name: 'Pixelation' },
+            { id: 'toonify', name: 'Toonify' },
+            { id: 'fisheye', name: 'Fish eye' },
+            { id: 'kawaseblur', name: 'Kawase-blur' }
+        ]
+        setEffects(data);
+    }
+
     let changeStep = async (step) => {
         setShowStep(step)
         // TODO tell phaser to change step too
@@ -123,6 +141,10 @@ const App = ({ game }) => {
             if (!stickers.length)
                 await fetchStickers()
         }
+        else if (showStep == AppSteps.FX) {
+            if (!stickers.length)
+                await fetchEffects()
+        }
     }, [showStep])
 
     let onAvatarClick = (avatar) => {
@@ -136,31 +158,27 @@ const App = ({ game }) => {
         game.events.emit('addAsset', { id: asset.id, type: 'sticker', fileType: asset.fileType, path: asset.path })
     }
 
+    let onFXClick = (effect) => {
+        setSelectedEffect(effect.id)
+        game.events.emit('addFX', effect)
+    }
+
     let onAvatarLayerToggle = (layer, groupId) => {
-        // console.log(groupId);
-        //console.log(layer);
         let newarray = avatars.map((avatar) => avatar.id === groupId ?
             modifyLayers(avatar, layer) : avatar
         )
-
         setAvatars(newarray)
-        //(lyr) => lyr.id === layer.id ? { ...lyr, visible: !lyr.visible } : lyr
         game.events.emit('avatarLayerToggle', layer)
-        // console.warn(newarray)
     }
 
     const modifyLayers = (a, layer) => {
-        //a.layers.map()
-        console.warn(layer.id);
         const modA = { ...a }
-        console.warn(modA.layers)
         modA.layers.map((lyr) => {
             if (lyr.id === layer.id)
                 lyr.visible = !layer.visible
             return lyr
             //lyr.id === layer.id ? { ...lyr, visible: !lyr.visible } : lyr
         })
-        console.warn(modA.layers)
         return modA
     }
 
@@ -192,6 +210,7 @@ const App = ({ game }) => {
                     {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
                     {showStep == AppSteps.AvatarLayers ? <LayerThumbs thumbs={avatars[selectedAvatar].layers} groupId={avatars[selectedAvatar].id} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
                     {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
+                    {showStep == AppSteps.FX ? <EffectsList thumbs={effects} onThumbClick={onFXClick} groupName='effects' selectedEffect={selectedEffect} /> : ''}
                 </div>
                 {/* <Menu /> */}
                 <div className="steps">

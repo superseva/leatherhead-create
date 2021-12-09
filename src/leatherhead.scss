@@ -131,3 +131,12 @@ body, .leaderhead-app {
     border: 3px dashed rgb(43, 55, 167);
   }
 }
+
+.thumb-effect{
+  color: white;
+  font-family: blockhead-unplugged,sans-serif;
+  cursor: pointer;
+  &.selected{
+    color: rgb(238, 155, 0);
+  }
+}

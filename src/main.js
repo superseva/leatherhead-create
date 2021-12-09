@@ -11,6 +11,10 @@ import { CreateConfig } from "./scenes/Config";
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
 import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
 import GesturesPlugin from 'phaser3-rex-plugins/plugins/gestures-plugin.js';
+import CrossStitchingPipelinePlugin from 'phaser3-rex-plugins/plugins/crossstitchingpipeline-plugin.js';
+import PixelationPipelinePlugin from 'phaser3-rex-plugins/plugins/pixelationpipeline-plugin.js';
+import ToonifyPipelinePlugin from 'phaser3-rex-plugins/plugins/toonifypipeline-plugin.js';
+import FishEyePipelinePlugin from 'phaser3-rex-plugins/plugins/fisheyepipeline-plugin.js';
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -32,6 +36,26 @@ const game = new Phaser.Game({
     }, {
       key: 'rexOutlinePipeline',
       plugin: OutlinePipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexCrossStitchingPipeline',
+      plugin: CrossStitchingPipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexPixelationPipeline',
+      plugin: PixelationPipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexToonifyPipeline',
+      plugin: ToonifyPipelinePlugin,
+      start: true
+    },
+    {
+      key: 'rexFishEyePipeline',
+      plugin: FishEyePipelinePlugin,
       start: true
     }
     ],
