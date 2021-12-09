@@ -117,13 +117,17 @@ body, .leaderhead-app {
 }
 .thumb{
   padding: 0px;
-  //margin: 20px;
   width: 7rem;
   cursor: pointer;
-  &.is-visible{
+}
+.thumb-layer{
+  padding: 0px;
+  width: 7rem;
+  cursor: pointer;
+  &.selected{
     border: 3px solid white;
   }
-  &.is-invisible{
-    border: 3px solid rgb(112, 10, 10);
+  &.deselected{
+    border: 3px dashed rgb(43, 55, 167);
   }
 }

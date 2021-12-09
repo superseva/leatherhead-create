@@ -118,11 +118,17 @@ body, .leaderhead-app {
   cursor: pointer;
 }
 
-.thumb.is-visible {
+.thumb-layer {
+  padding: 0px;
+  width: 7rem;
+  cursor: pointer;
+}
+
+.thumb-layer.selected {
   border: 3px solid white;
 }
 
-.thumb.is-invisible {
-  border: 3px solid #700a0a;
+.thumb-layer.deselected {
+  border: 3px dashed #2b37a7;
 }
 /*# sourceMappingURL=leatherhead.css.map */

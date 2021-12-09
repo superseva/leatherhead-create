@@ -4,6 +4,7 @@ import { AppSteps } from "../scenes/Config";
 
 import Menu from "./Menu";
 import Thumbs from "./Thumbs";
+import LayerThumbs from "./LayerThumbs";
 
 import "babel-polyfill";
 
@@ -33,10 +34,10 @@ const App = ({ game }) => {
                 path: "./assets/avatars/av1.png",
                 thumb: "./assets/avatars/av1.png",
                 layers: [
-                    { id: "av-1-layer-bg", fileType: "png", path: "./assets/avatars/av1-bg.png", thumb: "./assets/avatars/av1-bg.png", visible: true },
-                    { id: "av-1-layer-body", fileType: "png", path: "./assets/avatars/av1-body.png", thumb: "./assets/avatars/av1-body.png", visible: true },
-                    { id: "av-1-layer-mask", fileType: "png", path: "./assets/avatars/av1-mask.png", thumb: "./assets/avatars/av1-mask.png", visible: true },
-                    { id: "av-1-layer-weapon", fileType: "png", path: "./assets/avatars/av1-weapon.png", thumb: "./assets/avatars/av1-mask.png", visible: true }
+                    { id: "av-1-layer-bg", name: "Some layer name", fileType: "png", path: "./assets/avatars/av1-bg.png", thumb: "./assets/avatars/av1-bg.png", visible: true },
+                    { id: "av-1-layer-body", name: "Some layer name", fileType: "png", path: "./assets/avatars/av1-body.png", thumb: "./assets/avatars/av1-body.png", visible: true },
+                    { id: "av-1-layer-mask", name: "Some layer name", fileType: "png", path: "./assets/avatars/av1-mask.png", thumb: "./assets/avatars/av1-mask.png", visible: true },
+                    { id: "av-1-layer-weapon", name: "Some layer name", fileType: "png", path: "./assets/avatars/av1-weapon.png", thumb: "./assets/avatars/av1-mask.png", visible: true }
                 ]
             },
             {
@@ -46,9 +47,9 @@ const App = ({ game }) => {
                 path: "./assets/avatars/av2.png",
                 thumb: "./assets/avatars/av2.png",
                 layers: [
-                    { id: "av2-layer-bg", fileType: "png", path: "./assets/avatars/av2-bg.png", thumb: "./assets/avatars/av2-bg.png", visible: true },
-                    { id: "av2-layer-body", fileType: "png", path: "./assets/avatars/av2-body.png", thumb: "./assets/avatars/av2-body.png", visible: true },
-                    { id: "av2-layer-mask", fileType: "png", path: "./assets/avatars/av2-mask.png", thumb: "./assets/avatars/av2-mask.png", visible: true }
+                    { id: "av2-layer-bg", name: "Some layer name", fileType: "png", path: "./assets/avatars/av2-bg.png", thumb: "./assets/avatars/av2-bg.png", visible: true },
+                    { id: "av2-layer-body", name: "Some layer name", fileType: "png", path: "./assets/avatars/av2-body.png", thumb: "./assets/avatars/av2-body.png", visible: true },
+                    { id: "av2-layer-mask", name: "Some layer name", fileType: "png", path: "./assets/avatars/av2-mask.png", thumb: "./assets/avatars/av2-mask.png", visible: true }
                 ]
             }
         ]
@@ -189,7 +190,7 @@ const App = ({ game }) => {
             <div className="react-ui">
                 <div className='gallery'>
                     {showStep == AppSteps.Avatars ? < Thumbs thumbs={avatars} onThumbClick={onAvatarClick} groupName='avatars' /> : ''}
-                    {showStep == AppSteps.AvatarLayers ? <Thumbs thumbs={avatars[selectedAvatar].layers} groupId={avatars[selectedAvatar].id} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
+                    {showStep == AppSteps.AvatarLayers ? <LayerThumbs thumbs={avatars[selectedAvatar].layers} groupId={avatars[selectedAvatar].id} onThumbClick={onAvatarLayerToggle} groupName='avatarLayers' /> : ''}
                     {showStep == AppSteps.Stickers ? <Thumbs thumbs={stickers} onThumbClick={onStickerClick} groupName='stickers' /> : ''}
                 </div>
                 {/* <Menu /> */}
